@@ -1,96 +1,107 @@
-import React, { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
+import React, { useState, useEffect } from 'react'
+import Background from '../../../../public/img/curved-images/curved6.jpg'
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
+import BlueButton from '@/Components/BlueButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: '',
-    });
+const Login = ({ status }) => {
+  const { data, setData, post, processing, errors, reset } = useForm({
+    email: '',
+    password: '',
+    remember: '',
+  });
 
-    useEffect(() => {
-        return () => {
-            reset('password');
-        };
-    }, []);
-
-    const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
+  useEffect(() => {
+    return () => {
+      reset('password');
     };
+  }, []);
 
-    const submit = (e) => {
-        e.preventDefault();
+  const onHandleChange = (event) => {
+    setData(event.target.name, event.target.value);
+  };
 
-        post(route('login'));
-    };
-
-    return (
-        <GuestLayout>
-            <Head title="Log in" />
-
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel forInput="email" value="Email" />
-
-                    <TextInput
-                        type="text"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        handleChange={onHandleChange}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
+  const submit = (e) => {
+    e.preventDefault();
+    post(route('login'));
+  };
+  return (
+    <>
+      <Head title="Log in" />
+      {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+      <main className="mt-0 transition-all duration-200 ease-soft-in-out">
+        <section>
+          <div className="relative flex items-center p-0 overflow-hidden bg-center bg-cover min-h-75-screen">
+            <div className="container z-10">
+              <div className="flex flex-wrap mt-0 -mx-3">
+                <div className="flex flex-col w-full max-w-full px-3 mx-auto md:flex-0 shrink-0 md:w-6/12 lg:w-5/12 xl:w-4/12">
+                  <div className="relative flex flex-col min-w-0 mt-32 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border">
+                    <div className="p-6 pb-0 mb-0 bg-transparent border-b-0 rounded-t-2xl">
+                      <h3 className="relative z-10 font-bold text-transparent bg-gradient-to-tl from-blue-600 to-cyan-400 bg-clip-text">Welcome back</h3>
+                      <p className="mb-0">Enter your email and password to sign in</p>
+                    </div>
+                    <div className="flex-auto p-6">
+                      <form role="form" onSubmit={submit}>
+                        <InputLabel className="mb-2 ml-1 font-bold text-xs text-slate-700">Email</InputLabel>
+                        <div className="mb-4">
+                          <TextInput
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={data.email}
+                            autoComplete="username"
+                            isFocused={true}
+                            handleChange={onHandleChange}
+                          />
+                        </div>
+                        <InputLabel className="mb-2 ml-1 font-bold text-xs text-slate-700">Password</InputLabel>
+                        <div className="mb-4">
+                          <TextInput
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={data.password}
+                            autoComplete="current-password"
+                            handleChange={onHandleChange}
+                          />
+                        </div>
+                        {/* <div className="min-h-6 mb-0.5 block pl-12">
+                        <input id="rememberMe" className="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right" type="checkbox" checked="" />
+                        <label className="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700" htmlFor="rememberMe">Remember me</label>
+                      </div> */}
+                        <div className="text-center">
+                          <BlueButton
+                            type="submit"
+                            processing={processing}
+                          >
+                            Sign in
+                          </BlueButton>
+                        </div>
+                      </form>
+                    </div>
+                    {/* <div className="p-6 px-1 pt-0 text-center bg-transparent border-t-0 border-t-solid rounded-b-2xl lg:px-2">
+                    <p className="mx-auto mb-6 leading-normal text-sm">
+                      Don't have an account?
+                      <a href="../pages/sign-up.html" className="relative z-10 font-semibold text-transparent bg-gradient-to-tl from-blue-600 to-cyan-400 bg-clip-text">Sign up</a>
+                    </p>
+                  </div> */}
+                  </div>
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel forInput="password" value="Password" />
-
-                    <TextInput
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        handleChange={onHandleChange}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
+                <div className="w-full max-w-full px-3 lg:flex-0 shrink-0 md:w-6/12">
+                  <div className="absolute top-0 hidden w-3/5 h-full -mr-32 overflow-hidden -skew-x-10 -right-40 rounded-bl-xl md:block">
+                    <div className="absolute inset-x-0 top-0 z-0 h-full -ml-16 bg-cover skew-x-10" style={{ backgroundImage: `url(${Background})` }}></div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox name="remember" value={data.remember} handleChange={onHandleChange} />
-
-                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ml-4" processing={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    );
+    </>
+  )
 }
+
+export default Login
